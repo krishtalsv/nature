@@ -1,0 +1,160 @@
+<html>
+<head>
+<style>
+canvas
+{
+ border:solid 1px;
+}
+</style>
+</head>
+
+<body onload="init()">
+
+<script>
+
+function click()
+{
+ alert("click");
+}
+
+function crs( r, g, b ){ var c = r*0x10000 + g*0x100 + b; return c.toString(16);}
+function cr( r, g, b ){ return r*0x10000 + g*0x100 + b}
+
+var ctx1, ctx2, ctx3, ctx4;
+var w, h;
+var d = 1; function inc(){var i = d/4; if(i<1) i=1; d=d+i;} function dec(){ var i = d/4;if(i<1)i=1;d=d-i; if(d<1)d=1;}
+var stop = true;
+ 
+//color цвета смешение
+var k=0;
+function draw( n, ctx )
+{
+ var cols = w/d;var rows = h/d;
+ for(var y = 0; y<row; y++)
+ for(var x = 0; x<cols; x++)
+ {
+   if(k==0) 
+  {
+    ctx1.fillStyle= "#ff7f00";
+    ctx2.fillStyle= "#ff0000";
+    ctx3.fillStyle= "#00ff00";
+    ctx4.fillStyle= "#0000ff";
+  }
+ else
+  {
+  // ctx1.fillStyle= 0xff007fff;
+   // ctx1.fillStyle= "#007fff";
+ //   ctx1.fillStyle= "#7f00ff";
+   ctx1.fillStyle= "#0080ff";
+   ctx2.fillStyle= "#00ffff";
+   ctx3.fillStyle= "#ff00ff";
+   ctx4.fillStyle= "#ffff00";
+  }
+  if(k==0) k = 1; else k=0;
+  ctx1.fillRect(x*d,y*d,d,d);
+  ctx2.fillRect(x*d,y*d,d,d);
+  ctx3.fillRect(x*d,y*d,d,d);
+  ctx4.fillRect(x*d,y*d,d,d);
+ }
+}
+ 
+function draw1( ctx, param )
+{
+ for(var i=0;i<10000;i++)
+ {
+ var x = w*Math.random(); var y = h*Math.random();
+ var c = Math.random();
+ 
+ if( i < 5000)
+ ctx.fillStyle= "#ffffff";
+ else
+ ctx.fillStyle = (c<0.14)?"#0000ff":c<0.44?"#ff0000":"#008000";
+ 
+  //ctx.fillStyle = (c<0.33)?"#0000ff":c<0.66?"#ff0000":"00ff00";  
+ ctx.fillRect(x,y,d,d);
+ }
+}
+ 
+var bw = 1/2;
+function draw3( n, ctx )
+{
+ if(stop) return;
+ var cols = w/d;var rows = h/d;
+ var r=1/2;var g=1/2; b=1/2;
+ 
+ for(var y = 0; y<rows; y++)
+ for(var x = 0; x<cols; x++)
+ {
+ var r = Math.random();
+  
+ if( Math.random() < bw)
+  {
+ ctx.fillStyle= "#ffffff";
+   if(n == 1)
+   bw = 1/2;
+   
+   if(n==2)
+    bw = 0.1;//
+   //bw - bw/2;
+  //bw= bw - bw/3;
+  }
+ else
+ {
+ //if(param == 0 )
+ //  ctx.fillStyle = (r<0.14)?"#0000ff":r<0.44?"#ff0000":"#008000";
+// else
+//   ctx.fillStyle = (r<0.333)?"#0000ff":r<0.666?"#ff0000":"#00ff00";
+  //ctx.fillStyle = (r<0.2)?"#0000ff":r<0.666?"#ff0000":"#00ff00";
+  ctx.fillStyle= "#000000";
+   if(n==1) 
+     bw = 1/2;
+  if(n==2)
+  //bw = 1;
+  bw = 0.9;//
+  //bw= bw + bw/2;
+  
+  }  
+  //if(n==1)
+   ctx.fillRect(x*d,y*d,d,d);
+//  if(n==2)
+//   ctx1.fillRect(x*d,y*d,d,d);
+ }
+}
+ 
+
+function init()
+{
+ d=1;
+var c=document.getElementById("hdc1");ctx1=c.getContext("2d");
+ w=c.width;h=c.height;
+ c=document.getElementById("hdc2");ctx2=c.getContext("2d");
+ c=document.getElementById("hdc3");ctx3=c.getContext("2d");
+ c=document.getElementById("hdc4");ctx4=c.getContext("2d");
+
+ctx1.fillStyle="yellow";
+ctx1.fillRect(0,0,w,h);
+//color(ctx);
+//return;
+setInterval( function(){ if(!stop) draw( 1, ctx1 );}, 100);
+setInterval( function(){if(!stop) draw( 2, ctx2 );}, 100);
+setInterval( function(){if(!stop) draw( 3, ctx3 );}, 100);
+setInterval( function(){if(!stop) draw( 4, ctx4 );}, 100);
+
+document.getElementById("inf").innerHTML = w+"x"+h;
+//alert (c.height);
+}
+
+</script>
+<h3><button onclick="inc();"><h3>.    +    .</h3></button>
+      <button onclick="dec();"><h3>.    -    .</h3></button>
+      <button onclick="stop=!stop;"><h3> stop </h3></button>
+</h3>
+<canvas id="hdc1" width="128px" height="128px"></canvas>
+<canvas id="hdc2" width="128px" height="128px"></canvas>
+<canvas id="hdc3" width="128px" height="128px"></canvas>
+<canvas id="hdc4" width="128px" height="128px"></canvas>
+
+SKW(C)<span id="inf"></span>
+
+</body>
+</html>
